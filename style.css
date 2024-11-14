@@ -1,0 +1,39 @@
+/* Estilos para a galeria de produtos */
+#gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.gallery-item {
+    width: 200px;
+    text-align: center;
+}
+
+.gallery-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+h2 a {
+    text-decoration: none;
+    color: #333;
+}
+
+h2 a:hover {
+    color: #007acc;
+}
+
+/* Estilos para a página de detalhes */
+#product-details {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
+.product-image {
+    width: 50%;
+    border-radius: 8px;
+}
