@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Produtos - Minuano</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Galeria de Produtos Minuano</h1>
+    <div id="gallery">
+        <!-- A galeria será preenchida aqui com imagens e nomes dos produtos -->
+    </div>
+
+    <script>
+        const spreadsheetId = '1Xo2qBdMPK13WQ_6ZH5mV7-FG1wQwJ2JaXoReTRMmuuM'; // ID da sua planilha
+        const apiKey = 'AIzaSyD_utB9ALtwQC8nCRblDlkOPLYxOYylLHs'; // Sua chave da API
+        const sheetRange = 'Sheet1!A:D'; // Colunas: Nome, Descrição, Especificações, Imagem
+
+        // Função para buscar os dados da planilha
+        async function fetchProducts() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetRange}?key=${apiKey}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                console.error('Erro ao carregar os produtos');
+                return [];
+            }
+
+            const data = await response.json();
+            return data.values.slice(1).map(row => ({
+                name: row[0],
+                description: row[1],
+                specifications: row[2],
+                image: row[3]
+            }));
+        }
+
+        // Função para exibir a galeria
+        async function displayGallery() {
+            const products = await fetchProducts();
+            const gallery = document.getElementById('gallery');
+
+            products.forEach(product => {
+                const productDiv = document.createElement('div');
+                productDiv.classList.add('gallery-item');
+                productDiv.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="gallery-image" />
+                    <h2><a href="produto.html?name=${encodeURIComponent(product.name)}">${product.name}</a></h2>
+                `;
+                gallery.appendChild(productDiv);
+            });
+        }
+
+        displayGallery();
+    </script>
+</body>
+</html>
