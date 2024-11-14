@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Produto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="product-details">
+        <!-- As informações do produto serão exibidas aqui -->
+    </div>
+
+    <script>
+        const spreadsheetId = '1Xo2qBdMPK13WQ_6ZH5mV7-FG1wQwJ2JaXoReTRMmuuM'; // ID da planilha
+        const apiKey = 'AIzaSyD_utB9ALtwQC8nCRblDlkOPLYxOYylLHs'; // Sua chave da API
+        const sheetRange = 'Sheet1!A:D'; // Colunas: Nome, Descrição, Especificações, Imagem
+
+        // Obter o nome do produto da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productName = urlParams.get('name');
+
+        // Função para buscar os dados da planilha
+        async function fetchProductDetails() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetRange}?key=${apiKey}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                console.error('Erro ao carregar os detalhes do produto');
+                return null;
+            }
+
+            const data = await response.json();
+            return data.values.slice(1).find(row => row[0] === productName);
+        }
+
+        // Função para exibir os detalhes do produto
+        async function displayProductDetails() {
+            const productDetails = await fetchProductDetails();
+            const productContainer = document.getElementById('product-details');
+
+            if (productDetails) {
+                const [name, description, specifications, image] = productDetails;
+                productContainer.innerHTML = `
+                    <h1>${name}</h1>
+                    <img src="${image}" alt="${name}" class="product-image">
+                    <p><strong>Descrição:</strong> ${description}</p>
+                    <p><strong>Especificações:</strong> ${specifications}</p>
+                `;
+            } else {
+                productContainer.innerHTML = '<p>Produto não encontrado.</p>';
+            }
+        }
+
+        displayProductDetails();
+    </script>
+</body>
+</html>
