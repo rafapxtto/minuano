@@ -1,15 +1,14 @@
 /* Estilos para a galeria de produtos */
 #gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 colunas de tamanhos iguais */
+    gap: 20px; /* Espaço entre os itens */
+    justify-items: center; /* Centralizar os itens em cada célula */
 }
 
 .gallery-item {
     width: 200px;
     text-align: center;
-    flex: 1 1 200px; /* Flexibilidade para ajustar ao tamanho do container */
 }
 
 .gallery-image {
